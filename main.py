@@ -16,6 +16,7 @@ class Tetris:
         # initialize first shape
         self.shape_group = []
         self.create_shape()
+        self.movement_index = 0
 
     def on_event(self):
         for event in pygame.event.get():
@@ -24,10 +25,22 @@ class Tetris:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
                     sys.exit()
+                if event.key == pygame.K_d:
+                    self.shape_group[self.movement_index].move_right = True
+                if event.key == pygame.K_a:
+                    self.shape_group[self.movement_index].move_left = True
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_d:
+                    self.shape_group[self.movement_index].move_right = False
+                if event.key == pygame.K_a:
+                    self.shape_group[self.movement_index].move_left = False
 
     def on_loop(self):
-        for shape in self.shape_group:
-            shape.move_shape()
+        if self.shape_group[self.movement_index].movement:
+            self.shape_group[self.movement_index].move_shape()
+        else:
+            self.movement_index += 1
+            self.create_shape()
 
     def on_render(self):
         self.screen.fill(self.settings.bg_color)
@@ -47,6 +60,7 @@ class Tetris:
         self.on_cleanup()
 
     def create_shape(self):
+
         new_shape = block.Block(self)
         self.shape_group.append(new_shape)
 
