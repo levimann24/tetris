@@ -60,9 +60,18 @@ class Tetris:
         self.on_cleanup()
 
     def create_shape(self):
-
-        new_shape = block.Block(self)
-        self.shape_group.append(new_shape)
+        if len(self.shape_group) < 1:
+            new_shape = block.Block(self)
+            self.shape_group.append(new_shape)
+        elif len(self.shape_group) < 2:
+            p1 = self.shape_group[-1].shape
+            new_shape = block.Block(self, p1)
+            self.shape_group.append(new_shape)
+        else:
+            p1 = self.shape_group[-1].shape
+            p2 = self.shape_group[-2].shape
+            new_shape = block.Block(self, p1, p2)
+            self.shape_group.append(new_shape)
 
 
 if __name__ == "__main__":

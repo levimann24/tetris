@@ -4,7 +4,7 @@ import random
 
 class Block:
 
-    def __init__(self, main):
+    def __init__(self, main, p1='nothing', p2='nothing'):
         self.settings = main.settings
         self.screen = main.screen
         self.screen_rect = self.screen.get_rect()
@@ -14,6 +14,8 @@ class Block:
         self.movement = True
         self.move_right = False
         self.move_left = False
+
+        self.previous2 = [p1, p2]
 
         self.block_color = {
             'straight': (150, 0, 0),
@@ -25,7 +27,14 @@ class Block:
             'rz': (100, 100, 100),
         }
         block_pool = ['straight', 'left', 'right', 'square', 't', 'lz', 'rz']
-        self.shape = random.choice(block_pool)
+        new_pool = []
+        for block in block_pool:
+            if block in self.previous2:
+                continue
+            else:
+                new_pool.append(block)
+        print(new_pool)
+        self.shape = random.choice(new_pool)
         self.color = self.block_color[self.shape]
 
         # initialize main block for shape
